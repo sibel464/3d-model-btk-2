@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trilocale Milano — 3D Ev Turu</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Cpath d=%22M4 15 16 5l12 10v12H4z%22 fill=%22%23e0a96d%22/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <canvas id="scene"></canvas>
+
+  <!-- Yükleme ekranı -->
+  <div id="loader">
+    <div class="loader-inner">
+      <p class="eyebrow">Via Boncompagni · Milano</p>
+      <h1>Trilocale</h1>
+      <div class="bar"><span id="loader-bar"></span></div>
+      <p id="loader-text">Model yükleniyor… 0%</p>
+    </div>
+  </div>
+
+  <!-- Üst bar -->
+  <header id="topbar">
+    <div class="brand">
+      <span class="dot"></span>
+      <span>Trilocale <em>Milano</em></span>
+    </div>
+    <div class="modes">
+      <button id="mode-tour" class="active">Scroll Turu</button>
+      <button id="mode-free">Serbest Gezinti</button>
+    </div>
+  </header>
+
+  <!-- Oda navigasyonu -->
+  <nav id="rooms-nav"></nav>
+
+  <!-- Bölüm metni -->
+  <section id="chapter">
+    <p class="eyebrow" id="chapter-index">01 / 07</p>
+    <h2 id="chapter-title">—</h2>
+    <p id="chapter-text"></p>
+    <div id="chapter-items"></div>
+  </section>
+
+  <!-- Eşya etiketleri -->
+  <div id="hotspots"></div>
+
+  <!-- Odak paneli -->
+  <aside id="focus-panel" class="hidden">
+    <button id="focus-back" aria-label="Geri">← Tura dön</button>
+    <p class="eyebrow" id="focus-room"></p>
+    <h3 id="focus-title"></h3>
+    <p id="focus-text"></p>
+    <dl id="focus-specs"></dl>
+  </aside>
+
+  <div id="hint">Fare tekerleği, touchpad veya parmağınızla kaydırarak gezin · Etiketlere tıklayıp eşyalara odaklanın</div>
+  <div id="free-hint" class="hidden">Sürükle: döndür · Tekerlek: yakınlaş · Sağ tık: kaydır · Zemine çift tıkla: oraya git</div>
+
+  <div id="progress"><span id="progress-bar"></span></div>
+
+  <footer id="credit">
+    Model: <a href="https://sketchfab.com/3d-models/trilocale-via-boncompagni-milano-dd261cf6c2e647cab915f015230bb15e" target="_blank" rel="noopener">“Trilocale Via Boncompagni Milano”</a>
+    — Fabio Siccardi · <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC-BY-4.0</a>
+  </footer>
+
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

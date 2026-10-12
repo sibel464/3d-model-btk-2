@@ -1,0 +1,196 @@
+:root {
+  --bg: #0f0e0c;
+  --ink: #f4efe6;
+  --muted: #b9b1a3;
+  --accent: #e0a96d;
+  --glass: rgba(20, 18, 15, 0.62);
+  --line: rgba(244, 239, 230, 0.16);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Inter, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+html, body { overflow: hidden; height: 100%; overscroll-behavior: none; touch-action: none; }
+
+#scene {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  outline: none;
+}
+
+body.free #scene { cursor: grab; }
+body.free #scene:active { cursor: grabbing; }
+
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 10px;
+}
+
+h1, h2, h3 { font-family: Fraunces, Georgia, serif; font-weight: 300; margin: 0; }
+
+/* ---------- Loader ---------- */
+#loader {
+  position: fixed; inset: 0; z-index: 50;
+  display: grid; place-items: center;
+  background: radial-gradient(ellipse at center, #1d1a16 0%, #0b0a09 70%);
+  transition: opacity 0.9s ease, visibility 0.9s;
+}
+#loader.done { opacity: 0; visibility: hidden; }
+.loader-inner { text-align: center; width: min(360px, 80vw); }
+.loader-inner h1 { font-size: clamp(48px, 9vw, 84px); margin-bottom: 28px; }
+.bar { height: 2px; background: var(--line); overflow: hidden; }
+.bar span { display: block; height: 100%; width: 0; background: var(--accent); transition: width 0.2s; }
+#loader-text { color: var(--muted); font-size: 13px; margin-top: 14px; }
+
+/* ---------- Topbar ---------- */
+#topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 20;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 28px;
+  pointer-events: none;
+}
+#topbar > * { pointer-events: auto; }
+.brand { display: flex; align-items: center; gap: 10px; font-family: Fraunces, serif; font-size: 20px; }
+.brand em { color: var(--accent); font-style: italic; }
+.brand .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 14px var(--accent); }
+.modes { display: flex; background: var(--glass); border: 1px solid var(--line); border-radius: 999px; padding: 4px; backdrop-filter: blur(10px); }
+.modes button {
+  border: 0; background: transparent; color: var(--muted);
+  font: 500 13px Inter, sans-serif; padding: 8px 16px; border-radius: 999px; cursor: pointer;
+}
+.modes button.active { background: var(--ink); color: #1a1714; }
+
+/* ---------- Room nav ---------- */
+#rooms-nav {
+  position: fixed; right: 28px; top: 50%; transform: translateY(-50%); z-index: 20;
+  display: flex; flex-direction: column; gap: 14px;
+}
+#rooms-nav button {
+  display: flex; align-items: center; justify-content: flex-end; gap: 10px;
+  background: none; border: 0; color: var(--muted); cursor: pointer;
+  font: 500 12px Inter, sans-serif; padding: 0;
+}
+#rooms-nav button span.lbl { opacity: 0; transform: translateX(6px); transition: 0.25s; white-space: nowrap; }
+#rooms-nav button:hover span.lbl, #rooms-nav button.active span.lbl { opacity: 1; transform: none; }
+#rooms-nav button i {
+  width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--muted); display: block; transition: 0.25s;
+}
+#rooms-nav button.active { color: var(--ink); }
+#rooms-nav button.active i { background: var(--accent); border-color: var(--accent); transform: scale(1.4); }
+body.free #rooms-nav, body.focus #rooms-nav { opacity: 0.35; }
+
+/* ---------- Chapter ---------- */
+#chapter {
+  position: fixed; left: 28px; bottom: 64px; z-index: 15;
+  width: min(380px, calc(100vw - 56px));
+  padding: 24px 26px;
+  background: var(--glass); border: 1px solid var(--line); border-radius: 18px;
+  backdrop-filter: blur(14px);
+  transition: opacity 0.4s, transform 0.4s;
+}
+#chapter.swap { opacity: 0; transform: translateY(10px); }
+#chapter h2 { font-size: 34px; margin-bottom: 10px; }
+#chapter p#chapter-text { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0; }
+#chapter-items { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+#chapter-items button {
+  border: 1px solid var(--line); background: transparent; color: var(--ink);
+  font: 500 12px Inter, sans-serif; padding: 6px 11px; border-radius: 999px; cursor: pointer; transition: 0.2s;
+}
+#chapter-items button:hover { background: var(--accent); border-color: var(--accent); color: #1a1714; }
+body.focus #chapter, body.free #chapter { opacity: 0; pointer-events: none; transform: translateY(10px); }
+
+/* ---------- Hotspots ---------- */
+#hotspots { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
+.hotspot {
+  position: absolute; left: 0; top: 0;
+  display: flex; align-items: center; gap: 8px;
+  pointer-events: auto; cursor: pointer;
+  transition: opacity 0.3s;
+  will-change: transform;
+}
+.hotspot .pin {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 0 0 5px rgba(224, 169, 109, 0.35), 0 2px 10px rgba(0,0,0,.4);
+  position: relative; flex: none;
+}
+.hotspot .pin::after {
+  content: ""; position: absolute; inset: -5px; border-radius: 50%;
+  border: 1px solid var(--accent); animation: pulse 2s infinite;
+}
+@keyframes pulse { from { transform: scale(0.8); opacity: 1; } to { transform: scale(2); opacity: 0; } }
+.hotspot .tag {
+  background: var(--glass); border: 1px solid var(--line); backdrop-filter: blur(8px);
+  padding: 5px 10px; border-radius: 999px; font-size: 12px; font-weight: 500; white-space: nowrap;
+  opacity: 0; transform: translateX(-4px); transition: 0.2s;
+}
+.hotspot:hover .tag { opacity: 1; transform: none; }
+.hotspot.hidden { opacity: 0; pointer-events: none; }
+body.focus .hotspot { opacity: 0; pointer-events: none; }
+
+/* ---------- Focus panel ---------- */
+#focus-panel {
+  position: fixed; right: 28px; bottom: 64px; z-index: 25;
+  width: min(360px, calc(100vw - 56px));
+  padding: 22px 24px;
+  background: var(--glass); border: 1px solid var(--line); border-radius: 18px;
+  backdrop-filter: blur(14px);
+  transition: opacity 0.4s, transform 0.4s;
+}
+#focus-panel.hidden { opacity: 0; transform: translateY(14px); pointer-events: none; }
+#focus-panel h3 { font-size: 28px; margin-bottom: 10px; }
+#focus-panel p#focus-text { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0 0 12px; }
+#focus-back {
+  background: none; border: 1px solid var(--line); color: var(--ink); border-radius: 999px;
+  padding: 6px 12px; font: 500 12px Inter, sans-serif; cursor: pointer; margin-bottom: 16px;
+}
+#focus-back:hover { border-color: var(--accent); color: var(--accent); }
+#focus-specs { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; font-size: 13px; }
+#focus-specs dt { color: var(--muted); }
+#focus-specs dd { margin: 0; }
+
+/* ---------- Misc ---------- */
+#hint, #free-hint {
+  position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 15;
+  font-size: 12px; color: var(--muted); letter-spacing: 0.04em; white-space: nowrap;
+  transition: opacity 0.6s;
+}
+#hint.gone, #free-hint.hidden { opacity: 0; }
+body.free #hint { opacity: 0; }
+
+#progress { position: fixed; left: 0; right: 0; top: 0; height: 2px; z-index: 30; }
+#progress-bar { display: block; height: 100%; width: 0; background: var(--accent); }
+body.free #progress { opacity: 0; }
+
+#credit {
+  position: fixed; right: 28px; bottom: 20px; z-index: 15;
+  font-size: 11px; color: rgba(185, 177, 163, 0.7);
+}
+#credit a { color: inherit; }
+body.focus #credit { opacity: 0; }
+
+@media (max-width: 760px) {
+  #topbar { padding: 14px 16px; }
+  .brand { font-size: 16px; }
+  .modes button { padding: 7px 10px; font-size: 12px; }
+  #rooms-nav { right: 14px; }
+  #chapter { left: 16px; bottom: 54px; padding: 18px; width: calc(100vw - 32px); }
+  #chapter h2 { font-size: 26px; }
+  #focus-panel { right: 16px; left: 16px; width: auto; bottom: 54px; }
+  #hint, #free-hint { font-size: 11px; white-space: normal; text-align: center; width: calc(100vw - 32px); }
+  #credit { left: 16px; right: auto; bottom: 6px; font-size: 10px; }
+}
